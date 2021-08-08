@@ -1,4 +1,4 @@
-# Laravel CRUD Helper
+# Laravel Event Control Library
 
 [![CI Status](https://github.com/technote-space/laravel-transaction-fire-event/workflows/CI/badge.svg)](https://github.com/technote-space/laravel-transaction-fire-event/actions)
 [![codecov](https://codecov.io/gh/technote-space/laravel-transaction-fire-event/branch/master/graph/badge.svg)](https://codecov.io/gh/technote-space/laravel-transaction-fire-event)
@@ -8,7 +8,7 @@
 
 *Read this in other languages: [English](README.md), [日本語](README.ja.md).*
 
-Laravel用CRUDヘルパー
+トランザクション内で発生したイベントを制御するLaravelライブラリ
 
 [Packagist](https://packagist.org/packages/technote/laravel-transaction-fire-event)
 
@@ -38,106 +38,62 @@ composer require technote/laravel-transaction-fire-event
 ```
 
 ## 使用方法
-1. `Crudable Contract` と `Crudable Trait` を実装
+1. イベントの発行を制御したいモデルにて `Model` の代わりに `TransactionFireEventModel` で拡張
 
    ```php
    <?php
    namespace App\Models;
    
-   use Eloquent;
-   use Illuminate\Database\Eloquent\Model;
-   use Technote\CrudHelper\Models\Contracts\Crudable as CrudableContract;
-   use Technote\CrudHelper\Models\Traits\Crudable;
-    
-   /**
-    * Class Item
-    * @mixin Eloquent
-    */
-   class Item extends Model implements CrudableContract
-   {
-       use Crudable;
+   use Technote\TransactionFireEvent\Models\TransactionFireEventModel;
    
-       /**
-        * @var array
-        */
-       protected $guarded = [
-           'id',
-       ];
+   class Item extends TransactionFireEventModel
+   {
+       public static function boot()
+       {
+           parent::boot();
+   
+           self::saved(function ($model) {
+               //
+           });
+       }
+
+       public function tags(): BelongsToMany
+       {
+           return $this->belongsToMany(Tag::class);
+       }
    }
    ```
 
-## Routes
-CRUD routes は自動で設定されます。
-```shell script
-> php artisan route:clear
-> php artisan route:list
-+--------+-----------+------------------+---------------+-----------------------------------------------------------------+------------+
-| Domain | Method    | URI              | Name          | Action                                                          | Middleware |
-+--------+-----------+------------------+---------------+-----------------------------------------------------------------+------------+
-|        | GET|HEAD  | api/items        | items.index   | Technote\CrudHelper\Http\Controllers\Api\CrudController@index   | api        |
-|        | POST      | api/items        | items.store   | Technote\CrudHelper\Http\Controllers\Api\CrudController@store   | api        |
-|        | GET|HEAD  | api/items/{item} | items.show    | Technote\CrudHelper\Http\Controllers\Api\CrudController@show    | api        |
-|        | PUT|PATCH | api/items/{item} | items.update  | Technote\CrudHelper\Http\Controllers\Api\CrudController@update  | api        |
-|        | DELETE    | api/items/{item} | items.destroy | Technote\CrudHelper\Http\Controllers\Api\CrudController@destroy | api        |
-+--------+-----------+------------------+---------------+-----------------------------------------------------------------+------------+
-```
-
-## 詳細
-### バリデーション
-いくつかのバリデーションルールはカラム設定から自動で生成されます。
-- Type
-  - integer
-  - boolean
-  - numeric
-  - date
-  - time
-  - string
-- Length
-- Unsigned
-- Nullable
-- by column name
-  - email
-  - url
-  - phone
-
-### モデル名
-使用されるモデル名はAPI名によって決まります。
-#### 例：`test_items`
-1. to singular: `test_item`
-1. to studly: `TestItem`
-
-=> `TestItem`
-
-### Config
-#### Namespace
-- `'App\\Models'`  
-  - このライブラリは再帰的に検索しません。
-#### Prefix
-- `'api'`
-#### Middleware
-- `['api']`
-##### 変更方法
-1. `config/crud-helper.php` を生成するためのコマンドを実行
-
-   ```
-   php artisan vendor:publish --provider="Technote\CrudHelper\Providers\CrudHelperServiceProvider" --tag=config
-   ```
-1. 設定を変更
+2. トランザクション内で使用した場合、トランザクション終了時まで `saved`, `deleted` イベントの発行が保留される
 
    ```php
-   'namespace'  => 'App\\Models\\Crud',
-   'prefix'     => 'api/v1',
-   'middleware' => [
-       'api',
-       'auth',
-   ],
-   ``` 
+   DB::transaction(function () {
+       $item = new Item();
+       $item->name = 'test';
+       $item->save();
+       // saved イベントはまだ発行されない
+   
+       $item->tags()->sync([1, 2, 3]);
+   }
 
-## 検索機能
-`Searchable` が実装されている場合、検索機能が追加されます。
-### [Laravel Search Helper](https://github.com/technote-space/laravel-search-helper)
-```
-api/items?s=keyword
+   // トランザクション終了時に saved イベントが呼ばれるため
+   // $model->tags()->sync で同期した tags が取得できる
+   ```
+
+### 発行を保留するイベントを変更
+対象のイベントはデフォルトで `saved`, `deleted` です。  
+変更するには `getTargetEvents` をオーバーライドしてください。
+
+```php
+protected function getTargetEvents(): array
+{
+    return [
+        'created',
+        'updated',
+        'saved',
+        'deleted',
+    ];
+}
 ```
 
 ## Author
