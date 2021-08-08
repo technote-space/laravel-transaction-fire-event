@@ -57,6 +57,7 @@ composer require technote/laravel-transaction-fire-event
            });
        }
 
+       // example relation
        public function tags(): BelongsToMany
        {
            return $this->belongsToMany(Tag::class);
