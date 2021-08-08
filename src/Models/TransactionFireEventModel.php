@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Technote\TransactionFireEvent\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Technote\TransactionFireEvent\Service\TransactionService;
+use Technote\TransactionFireEvent\Services\TransactionService;
 
 abstract class TransactionFireEventModel extends Model
 {

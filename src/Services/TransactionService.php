@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Technote\TransactionFireEvent\Service;
+namespace Technote\TransactionFireEvent\Services;
 
 use Illuminate\Support\Facades\DB;
 
