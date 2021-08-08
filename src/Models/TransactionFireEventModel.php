@@ -13,8 +13,6 @@ abstract class TransactionFireEventModel extends Model
     protected function getTargetEvents(): array
     {
         return [
-            'created',
-            'updated',
             'saved',
             'deleted',
         ];
