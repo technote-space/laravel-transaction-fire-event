@@ -1,16 +1,16 @@
 # Laravel CRUD Helper
 
-[![CI Status](https://github.com/technote-space/laravel-crud-helper/workflows/CI/badge.svg)](https://github.com/technote-space/laravel-crud-helper/actions)
-[![codecov](https://codecov.io/gh/technote-space/laravel-crud-helper/branch/master/graph/badge.svg)](https://codecov.io/gh/technote-space/laravel-crud-helper)
-[![CodeFactor](https://www.codefactor.io/repository/github/technote-space/laravel-crud-helper/badge)](https://www.codefactor.io/repository/github/technote-space/laravel-crud-helper)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/technote-space/laravel-crud-helper/blob/master/LICENSE)
+[![CI Status](https://github.com/technote-space/laravel-transaction-fire-event/workflows/CI/badge.svg)](https://github.com/technote-space/laravel-transaction-fire-event/actions)
+[![codecov](https://codecov.io/gh/technote-space/laravel-transaction-fire-event/branch/master/graph/badge.svg)](https://codecov.io/gh/technote-space/laravel-transaction-fire-event)
+[![CodeFactor](https://www.codefactor.io/repository/github/technote-space/laravel-transaction-fire-event/badge)](https://www.codefactor.io/repository/github/technote-space/laravel-transaction-fire-event)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/technote-space/laravel-transaction-fire-event/blob/master/LICENSE)
 [![PHP: >=7.4](https://img.shields.io/badge/PHP-%3E%3D7.4-orange.svg)](http://php.net/)
 
 *Read this in other languages: [English](README.md), [日本語](README.ja.md).*
 
 CRUD helper for Laravel.
 
-[Packagist](https://packagist.org/packages/technote/laravel-crud-helper)
+[Packagist](https://packagist.org/packages/technote/laravel-transaction-fire-event)
 
 ## Table of Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -34,7 +34,7 @@ CRUD helper for Laravel.
 
 ## Install
 ```
-composer require technote/laravel-crud-helper
+composer require technote/laravel-transaction-fire-event
 ```
 
 ## Usage
