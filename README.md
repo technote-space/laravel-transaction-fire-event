@@ -72,7 +72,7 @@ composer require technote/laravel-transaction-fire-event
        $item = new Item();
        $item->name = 'test';
        $item->save();
-       // The `saved` event will not be issued here yet.
+       // The `saved` event will not be fired here yet.
    
        $item->tags()->sync([1, 2, 3]);
    }
@@ -81,7 +81,7 @@ composer require technote/laravel-transaction-fire-event
    // so you can get the synchronized tags with `$model->tags()->sync`.
    ```
 
-### Change the events that are pending publication
+### Change the event to hold fire
 The target events are `saved` and `deleted` by default.    
 To change it, override `getTargetEvents`.
 

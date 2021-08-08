@@ -38,7 +38,7 @@ composer require technote/laravel-transaction-fire-event
 ```
 
 ## 使用方法
-1. イベントの発行を制御したいモデルにて `Model` の代わりに `TransactionFireEventModel` で拡張
+1. イベントの発火を制御したいモデルにて `Model` の代わりに `TransactionFireEventModel` で拡張
 
    ```php
    <?php
@@ -65,14 +65,14 @@ composer require technote/laravel-transaction-fire-event
    }
    ```
 
-2. トランザクション内で使用した場合、トランザクション終了時まで `saved`, `deleted` イベントの発行が保留される
+2. トランザクション内で使用した場合、トランザクション終了時まで `saved`, `deleted` イベントの発火が保留される
 
    ```php
    DB::transaction(function () {
        $item = new Item();
        $item->name = 'test';
        $item->save();
-       // saved イベントはまだ発行されない
+       // saved イベントはまだ発火されない
    
        $item->tags()->sync([1, 2, 3]);
    }
@@ -81,7 +81,7 @@ composer require technote/laravel-transaction-fire-event
    // $model->tags()->sync で同期した tags が取得できる
    ```
 
-### 発行を保留するイベントを変更
+### 発火を保留するイベントを変更
 対象のイベントはデフォルトで `saved`, `deleted` です。  
 変更するには `getTargetEvents` をオーバーライドしてください。
 
