@@ -20,13 +20,7 @@ Controlling events that occur in a transaction.
 
 - [Install](#install)
 - [Usage](#usage)
-- [Routes](#routes)
-- [Details](#details)
-  - [Validation](#validation)
-  - [Model name](#model-name)
-  - [Config](#config)
-- [Search feature](#search-feature)
-  - [Laravel Search Helper](#laravel-search-helper)
+  - [Change the event to hold fire](#change-the-event-to-hold-fire)
 - [Author](#author)
 
 </details>
