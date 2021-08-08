@@ -1,0 +1,8 @@
+Thumbs.db
+/.idea
+
+/coverage
+/vendor
+.phpunit.result.cache
+/.work
+/fixtures
