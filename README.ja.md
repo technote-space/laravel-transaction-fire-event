@@ -38,10 +38,13 @@ composer require technote/laravel-transaction-fire-event
    <?php
    namespace App\Models;
    
-   use Technote\TransactionFireEvent\Models\TransactionFireEventModel;
+   use Illuminate\Database\Eloquent\Model;
+   use Technote\TransactionFireEvent\Models\DelayFireEvent;
    
-   class Item extends TransactionFireEventModel
+   class Item extends Model
    {
+       use DelayFireEvent;
+   
        public static function boot()
        {
            parent::boot();
@@ -51,7 +54,7 @@ composer require technote/laravel-transaction-fire-event
            });
        }
 
-       // example relation
+       // relation example
        public function tags(): BelongsToMany
        {
            return $this->belongsToMany(Tag::class);
@@ -77,10 +80,10 @@ composer require technote/laravel-transaction-fire-event
 
 ### 発火を保留するイベントを変更
 対象のイベントはデフォルトで `saved`, `deleted` です。  
-変更するには `getTargetEvents` をオーバーライドしてください。
+変更するには `getDelayTargetEvents` をオーバーライドしてください。
 
 ```php
-protected function getTargetEvents(): array
+protected function getDelayTargetEvents(): array
 {
     return [
         'created',

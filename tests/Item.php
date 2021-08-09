@@ -3,15 +3,18 @@ declare(strict_types=1);
 
 namespace Technote\TransactionFireEvent\Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Technote\TransactionFireEvent\Models\TransactionFireEventModel;
+use Technote\TransactionFireEvent\Models\DelayFireEvent;
 
 /**
  * Class Item
  * @package Technote\TransactionFireEvent\Tests
  */
-class Item extends TransactionFireEventModel
+class Item extends Model
 {
+    use DelayFireEvent;
+
     protected $fillable = [
         'name',
     ];
