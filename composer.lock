@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48e1706819e95db3ff873856ca6a12b9",
+    "content-hash": "ee2c14f0f2d02afb2e57125db2811952",
     "packages": [
         {
             "name": "brick/math",
@@ -8086,21 +8086,21 @@
         },
         {
             "name": "technote/laravel-search-helper",
-            "version": "v0.2.17",
+            "version": "v0.2.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/technote-space/laravel-search-helper.git",
-                "reference": "e830563d66e60915ca8dd3e34df512116b4fbae2"
+                "reference": "f33ae5962ce8d2912b799007a00e2557df9d926e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/technote-space/laravel-search-helper/zipball/e830563d66e60915ca8dd3e34df512116b4fbae2",
-                "reference": "e830563d66e60915ca8dd3e34df512116b4fbae2",
+                "url": "https://api.github.com/repos/technote-space/laravel-search-helper/zipball/f33ae5962ce8d2912b799007a00e2557df9d926e",
+                "reference": "f33ae5962ce8d2912b799007a00e2557df9d926e",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "*",
-                "php": "^7.3|^8.0"
+                "php": "^7.4|^8.0"
             },
             "require-dev": {
                 "codedungeon/phpunit-result-printer": "^0.31.0",
@@ -8147,7 +8147,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-08-06T18:42:51+00:00"
+            "time": "2021-08-08T19:05:09+00:00"
         },
         {
             "name": "theseer/tokenizer",
