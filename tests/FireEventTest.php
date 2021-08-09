@@ -36,7 +36,7 @@ class FireEventTest extends TestCase
             $item->name = 'test';
             $item->save();
 
-            self::assertEquals(['created'], Item::getCalledEvents());
+            self::assertEquals(['created'], Item::getCalledEvents()); // この時点で saved が呼ばれないことを確認
 
             // savepoint
             DB::transaction(function () use ($item) {
@@ -55,11 +55,11 @@ class FireEventTest extends TestCase
         self::assertSame('created', $called[0][0]);
         self::assertEmpty($called[0][1]);
         self::assertSame('saved', $called[1][0]);
-        self::assertCount(1, $called[1][1]);
+        self::assertCount(1, $called[1][1]); // トランザクション終了後に呼ばれたため tags に値があることを確認
 
         DB::transaction(function () {
             Item::first()->delete();
-            self::assertEquals(['created', 'saved'], Item::getCalledEvents());
+            self::assertEquals(['created', 'saved'], Item::getCalledEvents()); // この時点で deleted が呼ばれないことを確認
         });
         self::assertEquals(['created', 'saved', 'deleted'], Item::getCalledEvents());
     }
@@ -81,6 +81,6 @@ class FireEventTest extends TestCase
             //
         }
 
-        self::assertEquals(['created'], Item::getCalledEvents());
+        self::assertEquals(['created'], Item::getCalledEvents()); // トランザクション内でエラーが発生した場合に saved が呼ばれないことを確認
     }
 }

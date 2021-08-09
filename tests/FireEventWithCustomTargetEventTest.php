@@ -38,7 +38,7 @@ class FireEventWithCustomTargetEventTest extends TestCase
             $item->name = 'test';
             $item->save();
 
-            self::assertEmpty(Item2::getCalledEvents());
+            self::assertEmpty(Item2::getCalledEvents()); // created も発火が保留されていることを確認
 
             // savepoint
             DB::transaction(function () use ($item) {
@@ -55,7 +55,7 @@ class FireEventWithCustomTargetEventTest extends TestCase
         $called = Item2::getCalled();
         self::assertCount(2, $called);
         self::assertSame('created', $called[0][0]);
-        self::assertCount(1, $called[0][1]);
+        self::assertCount(1, $called[0][1]); // トランザクション後に呼ばれたため tags に値があることを確認
         self::assertSame('saved', $called[1][0]);
         self::assertCount(1, $called[1][1]);
 

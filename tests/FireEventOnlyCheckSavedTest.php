@@ -55,7 +55,7 @@ class FireEventOnlyCheckSavedTest extends TestCase
         $called = Item3::getCalled();
         self::assertCount(1, $called);
         self::assertSame('saved', $called[0][0]);
-        self::assertCount(1, $called[0][1]);
+        self::assertCount(1, $called[0][1]); // refresh を呼ばなくても tags に値があることを確認
     }
 
     public function testNotCallEventIfFailedInTransaction(): void
