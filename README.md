@@ -32,7 +32,7 @@ composer require technote/laravel-transaction-fire-event
 ```
 
 ## Usage
-1. In the model where you want to control the firing of events, extend it with `TransactionFireEventModel` instead of `Model`.
+1. In the model where you want to control the firing of events, use `DelayFireEvent` trait.
 
    ```php
    <?php

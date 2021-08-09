@@ -32,7 +32,7 @@ composer require technote/laravel-transaction-fire-event
 ```
 
 ## 使用方法
-1. イベントの発火を制御したいモデルにて `Model` の代わりに `TransactionFireEventModel` で拡張
+1. イベントの発火を制御したいモデルで `DelayFireEvent` トレイトを使用
 
    ```php
    <?php
