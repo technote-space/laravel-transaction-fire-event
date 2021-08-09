@@ -1,9 +1,9 @@
 # Laravel Event Control Library
 
 [![CI Status](https://github.com/technote-space/laravel-transaction-fire-event/workflows/CI/badge.svg)](https://github.com/technote-space/laravel-transaction-fire-event/actions)
-[![codecov](https://codecov.io/gh/technote-space/laravel-transaction-fire-event/branch/master/graph/badge.svg)](https://codecov.io/gh/technote-space/laravel-transaction-fire-event)
+[![codecov](https://codecov.io/gh/technote-space/laravel-transaction-fire-event/branch/main/graph/badge.svg?token=3yIzMhmFBS)](https://codecov.io/gh/technote-space/laravel-transaction-fire-event)
 [![CodeFactor](https://www.codefactor.io/repository/github/technote-space/laravel-transaction-fire-event/badge)](https://www.codefactor.io/repository/github/technote-space/laravel-transaction-fire-event)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/technote-space/laravel-transaction-fire-event/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/technote-space/laravel-transaction-fire-event/blob/main/LICENSE)
 [![PHP: >=7.4](https://img.shields.io/badge/PHP-%3E%3D7.4-orange.svg)](http://php.net/)
 
 *Read this in other languages: [English](README.md), [日本語](README.ja.md).*
