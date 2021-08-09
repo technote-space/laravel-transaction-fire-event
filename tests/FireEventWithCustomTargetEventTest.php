@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 
 /**
+ * 対象イベントに created を追加した場合の動作を確認
+ *
  * Class FireEventWithCustomTargetEventTest
  * @package Technote\TransactionFireEvent\Tests
  */

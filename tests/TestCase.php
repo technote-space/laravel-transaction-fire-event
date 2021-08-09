@@ -65,5 +65,6 @@ class TestCase extends BaseTestCase
 
         Item::clearCalled();
         Item2::clearCalled();
+        Item3::clearCalled();
     }
 }

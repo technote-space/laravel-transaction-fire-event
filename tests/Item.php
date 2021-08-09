@@ -18,9 +18,14 @@ class Item extends TransactionFireEventModel
 
     protected static array $called = [];
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
+        static::setupEvents();
+    }
+
+    protected static function setupEvents(): void
+    {
         self::created(function ($model) {
             $model->refresh();
             self::$called[] = ['created', $model->tags->pluck('id')];
