@@ -129,7 +129,7 @@ class OriginalModelTest extends TestCase
                 $item->name = 'test';
                 $item->save();
 
-                self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents()); // トランザクション内でエラーが発生しても saved が呼ばれてしまうことを確認
+                self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents());
 
                 throw new Exception('test');
             });
@@ -137,6 +137,6 @@ class OriginalModelTest extends TestCase
             self::assertSame('test', $e->getMessage());
         }
 
-        self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents());
+        self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents()); // トランザクション内でエラーが発生しても saved が呼ばれてしまうことを確認
     }
 }
