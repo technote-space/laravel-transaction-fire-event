@@ -73,12 +73,13 @@ class FireEventTest extends TestCase
                 $item = new Item();
                 $item->name = 'test';
                 $item->save();
-                self::assertEmpty(Item::getCalledEvents());
 
-                throw new Exception();
+                self::assertEquals(['created'], Item::getCalledEvents());
+
+                throw new Exception('test');
             });
         } catch (Exception $e) {
-            //
+            self::assertSame('test', $e->getMessage());
         }
 
         self::assertEquals(['created'], Item::getCalledEvents()); // トランザクション内でエラーが発生した場合に saved が呼ばれないことを確認

@@ -75,14 +75,15 @@ class OriginalModelTest extends TestCase
                 $item = new OriginalItem();
                 $item->name = 'test';
                 $item->save();
-                self::assertEmpty(OriginalItem::getCalledEvents());
 
-                throw new Exception();
+                self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents()); // トランザクション内でエラーが発生しても saved が呼ばれてしまうことを確認
+
+                throw new Exception('test');
             });
         } catch (Exception $e) {
-            //
+            self::assertSame('test', $e->getMessage());
         }
 
-        self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents()); // トランザクション内でエラーが発生しても saved が呼ばれてしまうことを確認
+        self::assertEquals(['created', 'saved'], OriginalItem::getCalledEvents());
     }
 }

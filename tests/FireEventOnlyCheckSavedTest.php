@@ -67,12 +67,13 @@ class FireEventOnlyCheckSavedTest extends TestCase
                 $item = new Item3();
                 $item->name = 'test';
                 $item->save();
+
                 self::assertEmpty(Item3::getCalledEvents());
 
-                throw new Exception();
+                throw new Exception('test');
             });
         } catch (Exception $e) {
-            //
+            self::assertSame('test', $e->getMessage());
         }
 
         self::assertEmpty(Item3::getCalledEvents());

@@ -75,12 +75,13 @@ class FireEventWithCustomTargetEventTest extends TestCase
                 $item = new Item2();
                 $item->name = 'test';
                 $item->save();
+
                 self::assertEmpty(Item2::getCalledEvents());
 
-                throw new Exception();
+                throw new Exception('test');
             });
         } catch (Exception $e) {
-            //
+            self::assertSame('test', $e->getMessage());
         }
 
         self::assertEmpty(Item2::getCalledEvents());
