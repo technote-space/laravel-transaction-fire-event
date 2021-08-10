@@ -29,7 +29,7 @@ class FireEventWithCustomTargetEventTest extends TestCase
         self::assertEquals(['created', 'saved', 'deleted'], Item2::getCalledEvents());
     }
 
-    public function testInTransaction(): void
+    public function testNestedTransaction(): void
     {
         self::assertEmpty(Item2::getCalledEvents());
 
@@ -40,8 +40,61 @@ class FireEventWithCustomTargetEventTest extends TestCase
 
             self::assertEmpty(Item2::getCalledEvents()); // created も発火が保留されていることを確認
 
-            // savepoint
+            DB::transaction(function () {
+                // トランザクション内のエラーでは外側のトランザクション終了時に saved が呼ばれないことを確認
+                try {
+                    DB::transaction(function () {
+                        $item = new Item2();
+                        $item->name = 'test';
+                        $item->save();
+                        throw new Exception('test');
+                    });
+                } catch (Exception $e) {
+                    self::assertSame('test', $e->getMessage());
+                }
+                self::assertEmpty(Item2::getCalledEvents());
+
+                $item = new Item2();
+                $item->name = 'test';
+                $item->save();
+
+                self::assertEmpty(Item2::getCalledEvents());
+            });
+
+            // リレーションデータの確認
+            $tag = new Tag();
+            $tag->name = 'tag';
+            $tag->save();
+
+            $item->tags()->sync([$tag->id]);
+        });
+
+        $called = Item2::getCalled();
+        self::assertCount(4, $called);
+        self::assertSame('created', $called[0][0]);
+        self::assertCount(1, $called[0][1]); // トランザクション終了後に呼ばれたため created にも tags に値があることを確認
+        self::assertSame('saved', $called[1][0]);
+        self::assertCount(1, $called[1][1]);
+        self::assertSame('created', $called[2][0]);
+        self::assertEmpty($called[2][1]); // tags を sync していないので空
+        self::assertSame('saved', $called[3][0]);
+        self::assertEmpty($called[3][1]);
+    }
+
+    public function testMultipleTimesTransaction(): void
+    {
+        self::assertEmpty(Item2::getCalledEvents());
+
+        DB::transaction(function () {
+            $item = new Item2();
+            $item->name = 'test';
+            $item->save();
+
+            self::assertEmpty(Item2::getCalledEvents()); // created も発火が保留されていることを確認
+
+            // savepointも考慮
             DB::transaction(function () use ($item) {
+                // リレーションデータの確認
                 $tag = new Tag();
                 $tag->name = 'tag';
                 $tag->save();
@@ -55,13 +108,14 @@ class FireEventWithCustomTargetEventTest extends TestCase
         $called = Item2::getCalled();
         self::assertCount(2, $called);
         self::assertSame('created', $called[0][0]);
-        self::assertCount(1, $called[0][1]); // トランザクション後に呼ばれたため tags に値があることを確認
+        self::assertCount(1, $called[0][1]); // トランザクション終了後に呼ばれたため created にも tags に値があることを確認
         self::assertSame('saved', $called[1][0]);
         self::assertCount(1, $called[1][1]);
 
+        // 一度 transaction を抜けた後に再度 transaction
         DB::transaction(function () {
             Item2::first()->delete();
-            self::assertEquals(['created', 'saved'], Item2::getCalledEvents());
+            self::assertEquals(['created', 'saved'], Item2::getCalledEvents()); // この時点で deleted が呼ばれないことを確認
         });
         self::assertEquals(['created', 'saved', 'deleted'], Item2::getCalledEvents());
     }
@@ -75,12 +129,13 @@ class FireEventWithCustomTargetEventTest extends TestCase
                 $item = new Item2();
                 $item->name = 'test';
                 $item->save();
+
                 self::assertEmpty(Item2::getCalledEvents());
 
-                throw new Exception();
+                throw new Exception('test');
             });
         } catch (Exception $e) {
-            //
+            self::assertSame('test', $e->getMessage());
         }
 
         self::assertEmpty(Item2::getCalledEvents());

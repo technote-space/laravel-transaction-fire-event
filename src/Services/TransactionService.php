@@ -7,14 +7,22 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
-    private array $callbacks = [];
+    private array $callbacks = [0 => []];
+
+    public function transactionBeginning(): void
+    {
+        $this->callbacks[DB::transactionLevel()] = [];
+    }
 
     public function transactionCommitted(): void
     {
-        if (DB::transactionLevel() === 0) {
+        $level = DB::transactionLevel();
+        array_push($this->callbacks[$level], ...($this->callbacks[$level + 1] ?? []));
+
+        if ($level === 0) {
             $callbacks = $this->callbacks;
-            $this->callbacks = [];
-            foreach ($callbacks as $callback) {
+            $this->callbacks = [0 => []];
+            foreach ($callbacks[0] as $callback) {
                 $callback();
             }
         }
@@ -26,10 +34,11 @@ class TransactionService
      */
     public function call(\Closure $callback)
     {
-        if (DB::transactionLevel() === 0) {
+        $level = DB::transactionLevel();
+        if ($level === 0) {
             return $callback();
         }
 
-        $this->callbacks[] = $callback;
+        $this->callbacks[$level][] = $callback;
     }
 }
