@@ -6,7 +6,6 @@ namespace Technote\TransactionFireEvent\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
-use Illuminate\Database\Events\TransactionRolledBack;
 use Illuminate\Support\Facades\Event;
 use Technote\TransactionFireEvent\Services\TransactionService;
 
