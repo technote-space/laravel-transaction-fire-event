@@ -94,6 +94,32 @@ protected function getDelayTargetEvents(): array
 }
 ```
 
+## 動機
+
+saved イベントで他のサービスとデータを連携する際に、以下のような実装の場合にうまく行かなかったため。
+
+```php
+function save(Article $article, $entity) {
+  $article->title = $entity->getTitle();
+  // ...
+  $article->save(); // saved イベント発火（まだ tags は同期されていない）
+  
+  $article->tags()->sync($entity->getTags());
+}
+
+function create($entity) {
+  save(new Article(), $entity);
+}
+
+function update($entity) {
+  save(Article::findOrFail($entity->getId()), $entity);
+}
+```
+
+https://github.com/fntneves/laravel-transactional-events
+
+がやりたいことに近かったが、 Model で trait を use するだけでやりたかった。
+
 ## Author
 [GitHub (Technote)](https://github.com/technote-space)  
 [Blog](https://technote.space)
